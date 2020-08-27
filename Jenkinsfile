@@ -66,7 +66,7 @@ def ENABLE_QUAY="true"
 
          script {
            openshift.withCluster() {
-             if (${ENABLE_QUAY}.toBoolean()) {
+             if (ENABLE_QUAY.toBoolean()) {
                withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-cicd-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
                  sh "skopeo copy docker://quay.io/cduarter/tasks-app:latest docker://quay.io/cduarter/tasks-app:stage --src-creds \"$QUAY_USER:$QUAY_PWD\" --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
                }
@@ -81,7 +81,7 @@ def ENABLE_QUAY="true"
        steps {
          script {
            openshift.withCluster() {
-             openshift.withProject(${STAGE_PROJECT}) {
+             openshift.withProject(STAGE_PROJECT) {
                openshift.selector("dc", "tasks").rollout().latest();
              }
            }
