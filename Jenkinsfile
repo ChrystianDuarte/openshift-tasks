@@ -1,4 +1,8 @@
 def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
+def DEV_PROJECT="dev-opentlc"
+def STAGE_PROJECT="stage-opentlc"
+def ENABLE_QUAY="true"
+
 
  pipeline {
    agent {
@@ -33,7 +37,7 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
          sh "cp target/openshift-tasks.war target/ROOT.war"
          script {
            openshift.withCluster() {
-             openshift.withProject(env.DEV_PROJECT) {
+             openshift.withProject(${DEV_PROJECT}) {
                openshift.selector("bc", "tasks").startBuild("--from-file=target/ROOT.war", "--wait=true")
              }
            }
@@ -44,7 +48,7 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
        steps {
          script {
            openshift.withCluster() {
-             openshift.withProject(env.DEV_PROJECT) {
+             openshift.withProject(${DEV_PROJECT}) {
                openshift.selector("dc", "tasks").rollout().latest();
              }
            }
@@ -62,12 +66,12 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
 
          script {
            openshift.withCluster() {
-             if (env.ENABLE_QUAY.toBoolean()) {
+             if (${ENABLE_QUAY}.toBoolean()) {
                withCredentials([usernamePassword(credentialsId: "${openshift.project()}-quay-cicd-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
                  sh "skopeo copy docker://quay.io/cduarter/tasks-app:latest docker://quay.io/cduarter/tasks-app:stage --src-creds \"$QUAY_USER:$QUAY_PWD\" --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
                }
              } else {
-               openshift.tag("${env.DEV_PROJECT}/tasks:latest", "${env.STAGE_PROJECT}/tasks:stage")
+               openshift.tag("${DEV_PROJECT}/tasks:latest", "${STAGE_PROJECT}/tasks:stage")
              }
            }
          }
@@ -77,7 +81,7 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
        steps {
          script {
            openshift.withCluster() {
-             openshift.withProject(env.STAGE_PROJECT) {
+             openshift.withProject(${STAGE_PROJECT}) {
                openshift.selector("dc", "tasks").rollout().latest();
              }
            }
@@ -86,3 +90,5 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
      }
    }
  }
+
+
