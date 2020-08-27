@@ -37,7 +37,7 @@ def ENABLE_QUAY="true"
          sh "cp target/openshift-tasks.war target/ROOT.war"
          script {
            openshift.withCluster() {
-             openshift.withProject(${DEV_PROJECT}) {
+             openshift.withProject("${DEV_PROJECT}") {
                openshift.selector("bc", "tasks").startBuild("--from-file=target/ROOT.war", "--wait=true")
              }
            }
