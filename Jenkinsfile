@@ -7,7 +7,6 @@ def mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
    stages {
      stage('Build App') {
        steps {
-         #git branch: 'eap-7', url: 'https://github.com/ChrystianDuarte/openshift-tasks.git'
          sh "${mvnCmd} install -DskipTests=true"
        }
      }
