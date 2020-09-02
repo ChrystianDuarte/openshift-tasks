@@ -65,7 +65,7 @@
             <div class="card-pf-body">
               <div style="text-align: center;">
                 <p>
-                  <button class="btn btn-primary btn-block" type="button" id="loginfo">Log Info V2 BUPA</button>
+                  <button class="btn btn-primary btn-block" type="button" id="loginfo">Log Info transelect</button>
                 </p>
                 <p>
                   <button class="btn btn-primary btn-block" type="button" id="logwarning">Log Warning</button>
