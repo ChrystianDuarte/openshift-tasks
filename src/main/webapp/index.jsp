@@ -65,10 +65,10 @@
             <div class="card-pf-body">
               <div style="text-align: center;">
                 <p>
-                  <button class="btn btn-primary btn-block" type="button" id="loginfo">Log Info Gasco V1</button>
+                  <button class="btn btn-primary btn-block" type="button" id="loginfo">Log Info Gasco V5</button>
                 </p>
                 <p>
-                  <button class="btn btn-primary btn-block" type="button" id="logwarning">Log Warning</button>
+                  <button class="btn btn-primary btn-block" type="button" id="logwarning">Log Warning v2</button>
                 </p>
                 <p>
                   <button class="btn btn-primary btn-block" type="button" id="logerror">Log Error</button>
